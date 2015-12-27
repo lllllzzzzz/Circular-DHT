@@ -3,11 +3,11 @@ import java.io.*;
 import java.net.*;
 
 public class cdht {
-    final int UDP_BASE_PORT = 5000;
+    final int UDP_BASE_PORT        = 5000;
 
-    final String MSG_REQUEST_RECV = ">";
+    final String MSG_REQUEST_RECV  = ">";
     final String MSG_RESPONSE_RECV = "<";
-    final String MSG_QUIT_RECV = "X";
+    final String MSG_QUIT_RECV     = "X";
 
     int m_port;
     int[] m_successorPeers, m_predecessorPeers;
@@ -17,16 +17,16 @@ public class cdht {
     Timer m_timer;
 
     public cdht(int port, int[] peersSuccessors, int[] peersPredecessors, InetAddress address, ServerSocket socketPortPeerInit, DatagramSocket datagramSocket) throws IOException {
-        final int TIMER_UDP_DELAY = 0;
-        final int TIMER_TCP_DELAY = 0;
+        final int TIMER_UDP_DELAY     = 0;
+        final int TIMER_TCP_DELAY     = 0;
         final int TIMER_UDP_FREQUENCY = 5000; // Call ping timer (UDP) every 5 second(s)
         final int TIMER_TCP_FREQUENCY = 500;  // Call ping timer (TCP) every 500 millisecond(s)
 
-        m_port = port;
-        m_successorPeers = peersSuccessors;
-        m_predecessorPeers = peersPredecessors;
-        m_address = address;
-        m_datagramSocket = datagramSocket;
+        m_port               = port;
+        m_successorPeers     = peersSuccessors;
+        m_predecessorPeers   = peersPredecessors;
+        m_address            = address;
+        m_datagramSocket     = datagramSocket;
         m_socketPortPeerInit = socketPortPeerInit;
         
         m_timer = new Timer();
@@ -45,21 +45,21 @@ public class cdht {
     class HandleTcpTasks extends TimerTask {
         final int NUM_COMPONENTS_MSG_QUIT_RECV = 5;
         
-        final String MSG_SENT_RESPONSE_1 = "A response message, destined for peer ";
-        final String MSG_SENT_RESPONSE_2 = ", has been sent.";
+        final String MSG_SENT_RESPONSE_1       = "A response message, destined for peer ";
+        final String MSG_SENT_RESPONSE_2       = ", has been sent.";
         final String MSG_FILE_FOUND_RESPONSE_1 = "Received a response message from peer ";
         final String MSG_FILE_FOUND_RESPONSE_2 = " which has the file ";
-        final String MSG_DEPART_1 = "Peer ";
-        final String MSG_DEPART_2 = " will depart the network.";
-        final String MSG_FIRST_SUCCESSOR = "My first successor is now peer ";
-        final String MSG_SECOND_SUCCESSOR = "My second successor is now peer ";
-        final String MSG_FILE_NOT_FOUND_1 = "File ";
-        final String MSG_FILE_NOT_FOUND_2 = " is not stored here.";
-        final String MSG_FILE_FOUND_1 = "File ";
-        final String MSG_FILE_FOUND_2 = " is here.";
-        final String MSG_FORWARD_FILE_REQUEST = "File request message has been forwarded to my successor.";
-        final String MSG_REQUEST = ">";
-        final String MSG_RESPONSE = "<";
+        final String MSG_DEPART_1              = "Peer ";
+        final String MSG_DEPART_2              = " will depart the network.";
+        final String MSG_FIRST_SUCCESSOR       = "My first successor is now peer ";
+        final String MSG_SECOND_SUCCESSOR      = "My second successor is now peer ";
+        final String MSG_FILE_NOT_FOUND_1      = "File ";
+        final String MSG_FILE_NOT_FOUND_2      = " is not stored here.";
+        final String MSG_FILE_FOUND_1          = "File ";
+        final String MSG_FILE_FOUND_2          = " is here.";
+        final String MSG_FORWARD_FILE_REQUEST  = "File request message has been forwarded to my successor.";
+        final String MSG_REQUEST               = ">";
+        final String MSG_RESPONSE              = "<";
 
         @Override
         public void run() {
@@ -137,9 +137,9 @@ public class cdht {
     class HandleUdpTasks extends TimerTask {
         // Ping peers 144 times. This method is called once every 5 seconds.
         // 144 * 5 = 720 seconds = 12 minutes, meeting 12-minute time limit.
-        final int NUM_TIMES_TO_PING = 144;
+        final int NUM_TIMES_TO_PING      = 144;
 
-        final String ERROR_PING_PEERS = "Pinging failed!";
+        final String ERROR_PING_PEERS    = "Pinging failed!";
         final String TIME_LIMIT_EXCEEDED = "12 minutes have elapsed, will stop pinging now.";
         
         // Counter to limit number of pings
@@ -167,14 +167,14 @@ public class cdht {
      * This method is called from a timer thread that called once every 10 seconds (by default).
      */
     public void PingNodeLoop(InetAddress address, int portPeerInit, int[] peersSuccessors) throws Exception {
-        final int SIZE_SEND_DATA_BUFFER = 128;
-        final int SIZE_RECV_DATA_BUFFER = 128;
-        final int SIZE_RESPONSE_DATA_BUFFER = 128;
-        final int NUM_PINGS_TO_SEND = 2;
+        final int SIZE_SEND_DATA_BUFFER         = 128;
+        final int SIZE_RECV_DATA_BUFFER         = 128;
+        final int SIZE_RESPONSE_DATA_BUFFER     = 128;
+        final int NUM_PINGS_TO_SEND             = 2;
 
-        final String MSG_PING = "!";
-        final String MSG_RESPONSE = "<";
-        final String MSG_PING_REQUEST_RECEIVED = "A ping request message was received from peer ";
+        final String MSG_PING                   = "!";
+        final String MSG_RESPONSE               = "<";
+        final String MSG_PING_REQUEST_RECEIVED  = "A ping request message was received from peer ";
         final String MSG_PING_RESPONSE_RECEIVED = "A ping response message was received from peer ";
 
         // Send ping to each of two successor peers
@@ -296,29 +296,29 @@ public class cdht {
     }
 
     public static void main(String args[]) throws Exception {
-        final int NUM_GOOD_ARGS = 3;
-        final int NUM_PEERS_TO_PING = 2;
-        final int NUM_PEERS_PREDECESSORS = 2;
-        final int UDP_BASE_PORT = 5000;
-        final int INDEX_INIT_PEER_ID = 0;
+        final int NUM_GOOD_ARGS              = 3;
+        final int NUM_PEERS_TO_PING          = 2;
+        final int NUM_PEERS_PREDECESSORS     = 2;
+        final int UDP_BASE_PORT              = 5000;
+        final int INDEX_INIT_PEER_ID         = 0;
         final int INDEX_SUCCESSIVE_1_PEER_ID = 1;
         final int INDEX_SUCCESSIVE_2_PEER_ID = 2;
-        final int TIMEOUT_WELCOME_SOCKET = 500;
-        final int TIMEOUT_PEER_INIT_SOCKET = 2000;
-        final int FREQUENCY_PING = 10000;
-        final int SIZE_REQUEST_MSG = 2;
-        final int LENGTH_FILE_NUM = 4;
+        final int TIMEOUT_WELCOME_SOCKET     = 500;
+        final int TIMEOUT_PEER_INIT_SOCKET   = 2000;
+        final int FREQUENCY_PING             = 10000;
+        final int SIZE_REQUEST_MSG           = 2;
+        final int LENGTH_FILE_NUM            = 4;
 
-        final String ERROR_BAD_ARGS = "Usage: java cdht [init peer id] [successive peer 1 id] [successive peer 2 id]";
-        final String MSG_PEER_HELLO_1 = "Hello world! I am peer ";
-        final String MSG_PEER_HELLO_2 = " on port ";
-        final String MSG_REQUEST = "request";
-        final String MSG_REQUEST_SEND = "> ";
-        final String MSG_QUIT = "quit";
-        final String MSG_QUIT_SEND = "X ";
-        final String ERROR_CONNECT_TO_PORT = "Failed to connect to server port!";
+        final String ERROR_BAD_ARGS          = "Usage: java cdht [init peer id] [successive peer 1 id] [successive peer 2 id]";
+        final String MSG_PEER_HELLO_1        = "Hello world! I am peer ";
+        final String MSG_PEER_HELLO_2        = " on port ";
+        final String MSG_REQUEST             = "request";
+        final String MSG_REQUEST_SEND        = "> ";
+        final String MSG_QUIT                = "quit";
+        final String MSG_QUIT_SEND           = "X ";
+        final String ERROR_CONNECT_TO_PORT   = "Failed to connect to server port!";
         final String ERROR_PINGS_NO_RESPONSE = "Still awaiting ping responses...";
-        final String MSG_QUIT_GOODBYE = "I am leaving the network now!";
+        final String MSG_QUIT_GOODBYE        = "I am leaving the network now!";
 
         if (args.length != NUM_GOOD_ARGS || !isInteger(args[0]) || !isInteger(args[1]) || !isInteger(args[2])) {
             System.out.println(ERROR_BAD_ARGS);
